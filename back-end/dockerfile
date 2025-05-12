@@ -1,0 +1,37 @@
+# Utiliser l'image officielle de PHP avec Apache
+FROM php:8.1-apache
+
+# Installer les extensions PHP requises et outils supplémentaires
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    zip \
+    unzip \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd \
+    && docker-php-ext-install pdo pdo_mysql
+
+# Installer Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Copier les fichiers du projet Laravel
+COPY . /var/www/html
+
+
+RUN composer update --prefer-dist --no-scripts --no-interaction
+
+# Installer les dépendances Laravel
+RUN composer install --prefer-dist --no-scripts --no-interaction
+
+# Copier le fichier .env (à configurer selon vos besoins)
+COPY .env /var/www/html/.env
+
+# Donner les permissions nécessaires
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Exposer le port sur lequel l'application va tourner
+EXPOSE 80
+
+# Commande pour démarrer Apache
+CMD ["apache2-foreground"]

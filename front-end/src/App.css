@@ -1,0 +1,17 @@
+::-webkit-scrollbar{
+    width: 10px;
+    
+}
+::-webkit-scrollbar-track{
+    background:transparent;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb{
+    background: linear-gradient(rgb(52, 148, 186),rgb(24, 0, 130)) ;
+    border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover{
+    background: linear-gradient(rgb(7, 145, 219),#0f2aaf) ;
+    border-radius: 6px;
+}

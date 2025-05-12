@@ -1,0 +1,32 @@
+/* Hide main scrollbar */
+.lol {
+    overflow-y: hidden;
+	
+}
+
+/* Style custom scrollbar for the component */
+.custom-scrollbar {
+    /* Set height and width of the component */
+    height: 500px; /* Adjust height as needed */
+     /* Adjust width as needed */
+    /* Enable scrolling for the component */
+     overflow-y: auto; /*  Enable vertical scrolling */
+     /* Hide horizontal scrollbar */
+    /* Customize scrollbar styles */
+    scrollbar-width: thin; /* Specify scrollbar width */
+    scrollbar-color: #516dfb #f0f0f0; /* Specify scrollbar thumb and track colors */
+}
+
+/* Define scrollbar thumb and track styles */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px; /* Specify scrollbar width */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #888888; /* Specify scrollbar thumb color */
+    border-radius: 4px; /* Specify scrollbar thumb border radius */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background-color: #f0f0f0; /* Specify scrollbar track color */
+}

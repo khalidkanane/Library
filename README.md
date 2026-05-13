@@ -122,14 +122,16 @@ GEMINI_API_KEY=your_api_key
 # 📸 Screenshots
 
 ## Dashboard
-_Add screenshot here_
+<img width="1919" height="834" alt="Capture d&#39;écran 2024-06-07 180427" src="https://github.com/user-attachments/assets/1fe071d6-461b-4ab4-86a6-08582b58f4fb" />
+
 
 ## Book Management
-_Add screenshot here_
+<img width="1543" height="836" alt="Capture d&#39;écran 2024-06-07 173736" src="https://github.com/user-attachments/assets/7b57e099-e78f-42bb-af01-70deebd4423f" />
+<img width="1919" height="840" alt="Capture d&#39;écran 2024-06-07 180529" src="https://github.com/user-attachments/assets/e9844f28-82dd-494a-9669-6bc73c380d41" />
+
 
 ## AI Features
-_Add screenshot here_
-
+<img width="1913" height="833" alt="Capture d&#39;écran 2024-06-07 180722" src="https://github.com/user-attachments/assets/1bead1e0-63e7-4d1e-a066-571a99e9d553" />
 ---
 
 # 🌟 Future Improvements
@@ -150,6 +152,4 @@ AI Engineer & Full Stack Developer
 
 ---
 
-# 📄 License
 
-This project is licensed under the MIT License.

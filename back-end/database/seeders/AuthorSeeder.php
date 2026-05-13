@@ -3,52 +3,48 @@
 namespace Database\Seeders;
 
 use App\Models\Author;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as FakerFactory;
-use Illuminate\Support\Facades\DB;
 
 class AuthorSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
-
-  
-
-
-     
     public function run(): void
     {
-
         $faker = FakerFactory::create('fr_FR');
 
-        // Get all user IDs from the users table
-
-        $images = [
-            '../Author/1715890280.jpg',
-            '../Author/1715896813.jpg',
-            '../Author/1715966132.jpg',
-            '../Author/1715966650.jpg',
-            '../Author/1715976843.jpg',
-            // Add more URLs as needed
-        ];
-
+        // Dynamically get all images from public/Author folder
+        $authorImagePath = public_path('Author');
+        $images = [];
         
-      
-   
-        // Define the number of posts you want to create
-        $numberOfPosts = 15;
+        if (is_dir($authorImagePath)) {
+            $files = glob($authorImagePath . '/*.*');
+            foreach ($files as $file) {
+                if (is_file($file)) {
+                    $images[] = '../Author/' . basename($file);
+                }
+            }
+        }
         
-        for ($i = 0; $i < $numberOfPosts; $i++) {
+        // Fallback if no images found
+        if (empty($images)) {
+            $images = ['../Author/default.jpg'];
+        }
+
+        // Create 15 authors
+        $numberOfAuthors = 15;
+        
+        for ($i = 0; $i < $numberOfAuthors; $i++) {
             Author::create([
                 'name' => $faker->firstName,
-                'birthday'=>'1960-05-03',
-                'daye_death'=>'2023-05-03',
+                'birthday' => $faker->dateTimeBetween('-60 years', '-20 years'),
+                'daye_death' => $faker->optional()->dateTimeBetween('-5 years', 'now'),
                 'content' => $faker->paragraph(),
                 'image' => $images[array_rand($images)],
-                'created_at' => $faker->dateTimeBetween('now'),
-                'updated_at' => $faker->dateTimeBetween('now'),
+                'created_at' => $faker->dateTimeBetween('-2 years', 'now'),
+                'updated_at' => $faker->dateTimeBetween('-2 years', 'now'),
             ]);
         }
     }

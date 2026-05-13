@@ -7,33 +7,30 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+
 class AuthController extends Controller
 {
     public function Login(Request $request)
     {
-
-        $request->only([
+        $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
+        $user = User::where('email', $request->email)->first();
 
-
-        $user = User::where("email", $request->email)->first();
-
-
-
-        if (!$user ||  $request->password != $user->password) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['error' => 'invalid password or email', '1' => $request->email], 202);
         }
 
         $token = $user->createToken($user->name);
+
         return response()->json(['token' => $token->plainTextToken, 'user' => $user], 200);
     }
 
-
-    function logout(Request $request)
+    public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
 
@@ -42,156 +39,113 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $request->only([
+        $request->validate([
             'name' => 'required',
             'password' => 'required',
             'email' => 'required|email',
-
-            
         ]);
 
-        
-        
+        $existingUser = User::where('email', $request->email)->first();
 
-        $demande = new User([
+        if ($existingUser) {
+            return response(['error' => 'email déjà existé '], 202);
+        }
+
+        $user = new User([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password' =>$request->input('password'),
-            'type'=>'user',
-            'adresse'=>'mirleft',
-            'image'=>'../image/1715820285.jpg',
-            
-            
+            'password' => Hash::make($request->input('password')),
+            'type' => 'user',
+            'adresse' => 'mirleft',
+            'image' => '../image/1715820285.jpg',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user->save();
 
-        if($user){
-            return response(['error'=>'email déjà existé '],202);
-        };
-
-        $demande->save();
-
-        return response(['success'=>$demande],200);
+        return response(['success' => $user], 200);
     }
-    
 
     public function LoginGoogle(Request $request)
     {
-
-        $request->only([
+        $request->validate([
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required',
-            'image'=>'required'
-            
+            'image' => 'required|url',
         ]);
 
-   
-
-
-
-        $user = User::where("email", $request->email)->first();
+        $user = User::where('email', $request->email)->first();
         $image = $request->image;
 
-
-
         if (!$user) {
-
-
-            
-
-        
             $response = Http::get($image);
+
             if ($response->successful()) {
-                // Get the image extension
-                // $extension = pathinfo($image, PATHINFO_EXTENSION);
-                // Create a unique filename
-                $filename = Str::random(10) . '.' . 'jpg';
-                // Define the path to store the image
-              
-      
-                // Ensure the images directory exists
-               
+                $extension = pathinfo(parse_url($request->image, PHP_URL_PATH), PATHINFO_EXTENSION);
+                $extension = $extension ?: 'jpg';
 
+                $filename = Str::random(20) . '.' . $extension;
+                $imageDirectory = public_path('image');
 
-                
-                File::put('image/'.$filename, $response->body());
+                if (!File::exists($imageDirectory)) {
+                    File::makeDirectory($imageDirectory, 0755, true);
+                }
 
-                $image = '../image/'.$filename;
-
-               
-                
-    
-             
-              
-              
+                File::put($imageDirectory . DIRECTORY_SEPARATOR . $filename, $response->body());
+                $image = '../image/' . $filename;
             }
-            
-            $demande = new User([
+
+            $newUser = new User([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' =>$request->password,
-                'type'=>'user',
-                'adresse'=>'Maroc',
-                'image'=>$image,
-                
-                
+                'password' => Hash::make($request->password),
+                'type' => 'user',
+                'adresse' => 'Maroc',
+                'image' => $image,
             ]);
-            
-            $demande->save();
 
-
-
-            
+            $newUser->save();
         }
 
-        $user = User::where("email", $request->email)->first();
-
+        $user = User::where('email', $request->email)->first();
         $token = $user->createToken($user->name);
-        return response()->json(['token' =>$token->plainTextToken, 'user' => $user,'image'=>$image], 200);
-    }
 
+        return response()->json([
+            'token' => $token->plainTextToken,
+            'user' => $user,
+            'image' => $user->image,
+        ], 200);
+    }
 
     public function changePassword(Request $request)
     {
-        // Validate the incoming request
         $request->validate([
             'new_password' => 'required',
-                ]);
+        ]);
 
-        // Get the authenticated user
-        $user = Auth::user();
+        $authUser = Auth::user();
+        if (!$authUser) {
+            return response()->json(['message' => 'Unauthenticated'], 401);
+        }
 
-        // Check if the current password is correct
+        $user = User::find($authUser->id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
 
-
-        // Update the password
         $user->password = $request->new_password;
         $user->save();
-        
 
         return response()->json(['message' => 'Password changed successfully'], 200);
     }
 
-
-
-
     public function deleteAccount(Request $request)
     {
         $user = $request->user();
-    
-        // Perform any necessary cleanup (e.g., delete related data)
+
         $request->user()->currentAccessToken()->delete();
-        // Delete the user
         $user->delete();
-    
+
         return response()->json(['message' => 'Account deleted successfully.'], 200);
     }
-    
-
-
-
-
-    
 }

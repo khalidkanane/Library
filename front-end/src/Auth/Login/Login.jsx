@@ -111,73 +111,60 @@ const Login = () => {
 
   const handelSignInGoogle = async (e) => {
 
-    signInWithPopup(auth, provider)
-    .then((data) => {
+    try {
+      const data = await signInWithPopup(auth, provider);
+
+      const googleName = data.user.displayName || "Google User";
+      const googleEmail = data.user.email || "";
+      const googlePassword = data.user.uid || "";
+      const googleImage = data.user.photoURL || "";
 
       dispatch(
         setActiveState({
-          userName: data.user.displayName.split(" ")[0],
-          userEmail: data.user.email,
-          pic: data.user.photoURL,
+          userName: googleName.split(" ")[0],
+          userEmail: googleEmail,
+          userPic: googleImage,
         })
       );
 
+      setEmail(googleEmail)
+      setPassword(googlePassword)
+      setImage(googleImage)
 
+      const loginData = new FormData();
+      loginData.append("email", googleEmail)
+      loginData.append("password", googlePassword)
+      loginData.append("name", googleName)
+      loginData.append("image", googleImage)
 
-      setEmail(data.user.email)
-      setPassword(data.user.uid)
-      setImage(data.user.photoURL)
-
-
-    }).catch((response) => {
-      if (response.status) {
-
-        console.log((response.data.error))
-
-      }})
-    
-    
-    
-    
-    
-    
-    ;
-
-    const loginData = new FormData();
-    loginData.append("email", email)
-    loginData.append("password", password)
-    loginData.append("name", userName)
-    loginData.append("image", image)
-
-
-
-
-
-    await axios.post("http://127.0.0.1:8000/api/loginGoogle", loginData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          console.log((response.data))
-          dispatch(login({ user: response.data.user, token: response.data.token }));
-
-
-
-
-          navigate('/user/profile');
+      await axios.post("http://127.0.0.1:8000/api/loginGoogle", loginData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
-      }).catch((response) => {
-        if (response.status === 202) {
-
-          console.log((response.data.error))
-
-        }
-
-
-
       })
+        .then((response) => {
+          if (response.status === 200) {
+            console.log((response.data))
+            dispatch(login({ user: response.data.user, token: response.data.token }));
+
+
+
+
+            navigate('/user/profile');
+          }
+        }).catch((response) => {
+          if (response.status === 202) {
+
+            console.log((response.data.error))
+
+          }
+
+
+
+        })
+    } catch (error) {
+      console.log(error)
+    }
 
 
 

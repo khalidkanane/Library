@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AiController;
 use App\Http\Controllers\ControllerAuthor;
 use App\Http\Controllers\ControllerBook;
 use App\Http\Controllers\ControllerCommentaries;
@@ -27,12 +28,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::post('/logout',[AuthController::class,'logout']);
+    Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/ratings', [RatingController::class, 'store']);
-    Route::post('/changePassword',[AuthController::class,'changePassword']);
-    Route::delete('/DeleteAccount',[AuthController::class,'deleteAccount']);
-   
-   
+    Route::post('/changePassword', [AuthController::class, 'changePassword']);
+    Route::delete('/DeleteAccount', [AuthController::class, 'deleteAccount']);
 });
 
 
@@ -41,15 +40,16 @@ Route::get('/ratings/{postId}', [RatingController::class, 'show']);
 
 
 
-Route::post('/login',[AuthController::class,'Login']);
-Route::post('/register',[AuthController::class,'register']);
-Route::post('/loginGoogle',[AuthController::class,'LoginGoogle']);
+Route::post('/login', [AuthController::class, 'Login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/loginGoogle', [AuthController::class, 'LoginGoogle']);
+Route::post('/generate-text', [AiController::class, 'generateText']);
 
 // Users Route 
-Route::get('/users',[ControllerUser::class,'index']);
+Route::get('/users', [ControllerUser::class, 'index']);
 
-Route::delete('users/delete/{id}',[ControllerUser::class,'destroy']);
-Route::post('users/update/{id}',[ControllerUser::class,'update']);
+Route::delete('users/delete/{id}', [ControllerUser::class, 'destroy']);
+Route::post('users/update/{id}', [ControllerUser::class, 'update']);
 
 Route::post('users/add', [ControllerUser::class, 'Add']);
 
@@ -57,33 +57,33 @@ Route::post('users/add', [ControllerUser::class, 'Add']);
 // Books Route
 
 
-Route::get('/Books',[ControllerBook::class,'index']);
+Route::get('/Books', [ControllerBook::class, 'index']);
 Route::post('Books/add', [ControllerBook::class, 'Add']);
-Route::get('/lastbooks',[ControllerBook::class,'Lastbooks']);
+Route::get('/lastbooks', [ControllerBook::class, 'Lastbooks']);
 Route::get('Books/{id}', [ControllerBook::class, 'find']);
 Route::delete('Books/{id}', [ControllerBook::class, 'destroy']);
 Route::post('Books/update/{id}', [ControllerBook::class, 'update']);
 Route::get('best_books', [ControllerBook::class, 'best_books']);
-Route::get('category/{category}',[ControllerBook::class,'getBooksByCategory']);
+Route::get('category/{category}', [ControllerBook::class, 'getBooksByCategory']);
 
 Route::get('topRatedBooks', [ControllerBook::class, 'topRatedBooks']);
 
 // Author Route 
 
-Route::get('/Authors',[ControllerAuthor::class,'index']);
-Route::delete('authors/delete/{id}',[ControllerAuthor::class,'destroy']);
+Route::get('/Authors', [ControllerAuthor::class, 'index']);
+Route::delete('authors/delete/{id}', [ControllerAuthor::class, 'destroy']);
 Route::post('Authors/add', [ControllerAuthor::class, 'Add']);
 Route::post('Authors/update/{id}', [ControllerAuthor::class, 'update']);
-Route::get('/Authors/{id}',[ControllerAuthor::class,'find']);
+Route::get('/Authors/{id}', [ControllerAuthor::class, 'find']);
 
 
 
 // Route Comment
 
-Route::get('/Comments',[ControllerCommentaries::class,'index']);
-Route::get('/Comments/{idbook}',[ControllerCommentaries::class,'getCommentsByBook']);
-Route::post('/Comments/add',[ControllerCommentaries::class,'store']);
-Route::delete('/Comments/delete/{id}',[ControllerCommentaries::class,'destroy']);
+Route::get('/Comments', [ControllerCommentaries::class, 'index']);
+Route::get('/Comments/{idbook}', [ControllerCommentaries::class, 'getCommentsByBook']);
+Route::post('/Comments/add', [ControllerCommentaries::class, 'store']);
+Route::delete('/Comments/delete/{id}', [ControllerCommentaries::class, 'destroy']);
 
 // route 
 

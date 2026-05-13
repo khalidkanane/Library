@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Book;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as FakerFactory;
 use Illuminate\Support\Facades\DB;
@@ -17,35 +16,57 @@ class BookSeeder extends Seeder
     {
         $faker = FakerFactory::create('fr_FR');
 
-        // Get all user IDs from the users table
-        $userIds = DB::table('authors')->pluck('id')->toArray();
+        // Get all author IDs
+        $authorIds = DB::table('authors')->pluck('id')->toArray();
 
+        // Dynamically get all images from public/Books folder
+        $bookImagePath = public_path('Books');
+        $bookImages = [];
+        
+        if (is_dir($bookImagePath)) {
+            $files = glob($bookImagePath . '/*.*');
+            foreach ($files as $file) {
+                if (is_file($file)) {
+                    $bookImages[] = '../Books/' . basename($file);
+                }
+            }
+        }
+        
+        // Fallback if no images found
+        if (empty($bookImages)) {
+            $bookImages = ['../Books/default.jpg'];
+        }
 
-              // List of image URLs
-              $images = [
-                '../Books/1715547621.jpg',
-                '../Books/1715719183.jpg',
-                '../Books/1716149892.jpg',
-                '../Books/1715762564.jpg',
-                '../Books/1715719958.jpg',
-                // Add more URLs as needed
-            ];
+        // Dynamically get all PDFs from public/Document folder
+        $documentPath = public_path('Document');
+        $documents = [];
+        
+        if (is_dir($documentPath)) {
+            $files = glob($documentPath . '/*.pdf');
+            foreach ($files as $file) {
+                if (is_file($file)) {
+                    $documents[] = '../Document/' . basename($file);
+                }
+            }
+        }
 
-          
+        // Define categories for variety
+        $categories = ['Fiction', 'Drama', 'Science', 'History', 'Mystery', 'Romance', 'Adventure'];
+        
+        // Create 15 books
+        $numberOfBooks = 15;
 
-        // Define the number of posts you want to create
-        $numberOfPosts = 15;
-
-        // Loop through and create dummy posts
-        for ($i = 0; $i < $numberOfPosts; $i++) {
+        for ($i = 0; $i < $numberOfBooks; $i++) {
             Book::create([
-                'title' => $faker->sentence(),
-                'category' => 'Derama',
-                'content' => $faker->paragraph(),
-                'image' =>   $images[array_rand($images)],
-                'author_id' => $faker->randomElement($userIds), // Select a random user ID from the existing ones
+                'title' => $faker->unique()->sentence(3),
+                'category' => $faker->randomElement($categories),
+                'content' => $faker->paragraphs(3, true),
+                'date_public' => $faker->date(),
+                'image' => $bookImages[array_rand($bookImages)],
+                'pdf' => !empty($documents) ? $documents[array_rand($documents)] : null,
+                'author_id' => $faker->randomElement($authorIds),
                 'created_at' => $faker->dateTimeBetween('-1 year', 'now'),
-                'updated_at' => $faker->dateTimeBetween( 'now'),
+                'updated_at' => $faker->dateTimeBetween('-1 year', 'now'),
             ]);
         }
     }

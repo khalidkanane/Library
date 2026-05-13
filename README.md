@@ -1,107 +1,155 @@
-📚 AI Library Management System
+# 📚 AI Library Management System
 
-A modern Library Management System built with React, Laravel, Tailwind CSS, and Firebase, integrated with the Gemini AI API to generate intelligent text content and enhance user interaction.
+A modern Library Management System built with **React**, **Laravel**, **Tailwind CSS**, and **Firebase**, integrated with the **Gemini AI API** to generate intelligent text content and enhance user interaction.
 
 The application provides a complete digital solution for managing books, users, borrowing operations, and AI-powered features through a clean and responsive interface.
 
 ---
-🚀 Features
 
-📖 Book management system
-👥 User authentication & management
-🔍 Search and filter books
-📚 Borrow & return books
-❤️ Favorite books system
-☁️ Firebase integration
-🤖 AI-generated text using Gemini API
-📱 Responsive modern UI
-⚡ Fast and optimized frontend
-🔐 Secure backend API with Laravel
+## 🚀 Features
 
-🛠️ Technologies Used
-Frontend
-React.js
-Tailwind CSS
-Axios
-React Router
-Backend
-Laravel
-REST API
-MySQL
-Cloud & Services
-Firebase Authentication
-Firebase Storage
-Gemini API
+- 📖 Book management system
+- 👥 User authentication & management
+- 🔍 Search and filter books
+- 📚 Borrow & return books
+- ❤️ Favorite books system
+- ☁️ Firebase integration
+- 🤖 AI-generated text using Gemini API
+- 📱 Responsive modern UI
+- ⚡ Fast and optimized frontend
+- 🔐 Secure backend API with Laravel
 
-🤖 AI Integration
+---
 
-This project integrates the Gemini API to generate intelligent text features such as:
+# 🛠️ Technologies Used
 
-Book summaries
-Reading recommendations
-Smart descriptions
-AI assistant responses
+## Frontend
+- React.js
+- Tailwind CSS
+- Axios
+- React Router
 
-📂 Project Structure
+## Backend
+- Laravel
+- REST API
+- MySQL
+
+## Cloud & Services
+- Firebase Authentication
+- Firebase Storage
+- Gemini API
+
+---
+
+# 🤖 AI Integration
+
+This project integrates the **Gemini API** to generate intelligent text features such as:
+
+- Book summaries
+- Reading recommendations
+- Smart descriptions
+- AI assistant responses
+
+---
+
+# 📂 Project Structure
+
+```bash
 library-management-system/
 │
 ├── frontend/        # React Frontend
 ├── backend/         # Laravel Backend
-├── firebase/        # Firebase Config
+|
 └── README.md
+```
 
-⚙️ Installation
-1️⃣ Clone the Repository
+---
+
+# ⚙️ Installation
+
+## 1️⃣ Clone the Repository
+
+```bash
 git clone https://github.com/khalidkanane/library-management-system.git
 cd library-management-system
-🔧 Frontend Setup
+```
+
+---
+
+# 🔧 Frontend Setup
+
+```bash
 cd frontend
 npm install
 npm run dev
+```
 
-🔧 Backend Setup
+---
+
+# 🔧 Backend Setup
+
+```bash
 cd backend
 composer install
 cp .env.example .env
 php artisan key:generate
 php artisan migrate
 php artisan serve
+```
 
-🔥 Firebase Configuration
+---
+
+# 🔥 Firebase Configuration
 
 Create a Firebase project and add your Firebase configuration inside:
 
+```bash
 frontend/src/firebase.js
-🤖 Gemini API Configuration
+```
+
+---
+
+# 🤖 Gemini API Configuration
 
 Add your Gemini API key inside your environment variables:
 
+```env
 GEMINI_API_KEY=your_api_key
+```
 
 ---
 
-📸 Screenshots
-Dashboard
+# 📸 Screenshots
 
+## Dashboard
+_Add screenshot here_
 
-Book Management
+## Book Management
+_Add screenshot here_
 
-
-
-AI Features
+## AI Features
+_Add screenshot here_
 
 ---
 
-🌟 Future Improvements
-AI chatbot assistant
-Book recommendation system
-Real-time notifications
-PDF upload & analysis
-Advanced analytics dashboard
+# 🌟 Future Improvements
 
-👨‍💻 Author
+- AI chatbot assistant
+- Book recommendation system
+- Real-time notifications
+- PDF upload & analysis
+- Advanced analytics dashboard
 
-Khalid Kanane
+---
+
+# 👨‍💻 Author
+
+**Khalid Kanane**
 
 AI Engineer & Full Stack Developer
 
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.

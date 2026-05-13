@@ -52,7 +52,7 @@ library-management-system/
 
 ⚙️ Installation
 1️⃣ Clone the Repository
-git clone https://github.com/YOUR_USERNAME/library-management-system.git
+git clone https://github.com/khalidkanane/library-management-system.git
 cd library-management-system
 🔧 Frontend Setup
 cd frontend
